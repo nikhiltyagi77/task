@@ -4,6 +4,7 @@ import Home from "./Pages/Home";
 import AboutUs from "./Pages/AboutUs";
 import List from "./Pages/form-1/list";
 import Add from "./Pages/form-1/add";
+import Edit from "./Pages/form-1/edit";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/about-us" element={<AboutUs />}></Route>
           <Route path="/add" element={<Add />}></Route>
+          <Route path="/edit" element={<Edit />}></Route>
           <Route path="/form" element={<Form />}></Route>
           <Route path="/list" element={<List />}></Route>
         </Routes>
