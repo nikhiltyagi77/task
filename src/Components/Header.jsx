@@ -15,7 +15,10 @@ export default function Header() {
                 <Link to="/about-us">About Us</Link>
               </li>
               <li className="hover:opacity-80 hover:underline ">
-                <Link to="/form">React Form</Link>
+                <Link to="/add">Add Page</Link>
+              </li>
+                 <li className="hover:opacity-80 hover:underline ">
+                <Link to="/list">Listing</Link>
               </li>
             </ul>
           </div>
