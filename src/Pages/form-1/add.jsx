@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { FaCircleArrowLeft } from "react-icons/fa6";
-import PhoneInput from "react-phone-input-2";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../Components/Layout";
+import PhoneInput from "react-phone-input-2";
 
-const Add = () => {
+const AddForm = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     fName: "",
@@ -307,4 +307,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default AddForm;

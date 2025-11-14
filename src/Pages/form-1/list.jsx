@@ -38,24 +38,24 @@ const List = () => {
               <table className="w-full">
                 <thead>
                   <tr>
-                    <th className="px-3 py-2 text-left border-b ">
+                    <th className="px-3 py-2 text-left ">
                       First Name
                     </th>
-                    <th className="px-3 py-2 text-left border-b ">Last Name</th>
-                    <th className="px-3 py-2 text-left border-b ">Email</th>
-                    <th className="px-3 py-2 text-left border-b ">
+                    <th className="px-3 py-2 text-left ">Last Name</th>
+                    <th className="px-3 py-2 text-left ">Email</th>
+                    <th className="px-3 py-2 text-left ">
                       Mobile No.
                     </th>
-                    <th className="px-3 py-2 text-left border-b ">City</th>
-                    <th className="px-3 py-2 text-left border-b ">State</th>
-                    <th className="px-3 py-2 text-left border-b ">Hobies</th>
-                    <th className="px-3 py-2 text-left border-b ">Skills</th>
-                    <th className="px-3 py-2 text-left border-b ">Actions</th>
+                    <th className="px-3 py-2 text-left ">City</th>
+                    <th className="px-3 py-2 text-left ">State</th>
+                    <th className="px-3 py-2 text-left ">Hobies</th>
+                    <th className="px-3 py-2 text-left ">Skills</th>
+                    <th className="px-3 py-2 text-left ">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.map((info, i) => (
-                    <tr className=" border-b last:border-none">
+                    <tr className=" border-t">
                       <td className="px-3 py-2 text-left ">{info?.fName}</td>
                       <td className="px-3 py-2 text-left ">{info?.lName}</td>
                       <td className="px-3 py-2 text-left ">{info?.email}</td>
