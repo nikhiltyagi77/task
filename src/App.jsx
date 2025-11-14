@@ -7,6 +7,8 @@ import Edit from "./Pages/form-1/edit";
 import Form from "./Pages/Form";
 import AddForm from "./Pages/form-1/add";
 import FormTest from "./Pages/form-1/form-2";
+import ListTest from "./Pages/test-1/list";
+import FormTask from "./Pages/test-1/form";
 
 const App = () => {
   return (
@@ -20,6 +22,8 @@ const App = () => {
           <Route path="/form" element={<Form />}></Route>
           <Route path="/form-2" element={<FormTest />}></Route>
           <Route path="/list" element={<List />}></Route>
+           <Route path="/listtest" element={<ListTest />}></Route>
+            <Route path="/formtest" element={<FormTask />}></Route>
         </Routes>
       </Router>
     </div>
