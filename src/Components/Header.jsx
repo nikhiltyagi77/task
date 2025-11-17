@@ -12,13 +12,10 @@ export default function Header() {
                 <Link to="/">Home</Link>
               </li>
               <li className="hover:opacity-80 hover:underline ">
-                <Link to="/about-us">About Us</Link>
+                <Link to="/form-1">Form-1</Link>
               </li>
               <li className="hover:opacity-80 hover:underline ">
-                <Link to="/add">Add Page</Link>
-              </li>
-                 <li className="hover:opacity-80 hover:underline ">
-                <Link to="/list">Listing</Link>
+                <Link to="/list-1">List-1</Link>
               </li>
             </ul>
           </div>

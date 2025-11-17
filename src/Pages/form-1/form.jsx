@@ -2,11 +2,12 @@ import { useState } from "react";
 import Select from "react-dropdown-select";
 import { FiPlus } from "react-icons/fi";
 import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 
-const FormTask = () => {
+const Form1 = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState("");
   const [form, setForm] = useState({
@@ -91,7 +92,7 @@ const FormTask = () => {
                 <div className="md:col-span-6 col-span-12 ">
                   <label>Mobile No.</label>
                   <PhoneInput
-                    country={"in"}
+                    country="in"
                     value={form.mobileNo}
                     onChange={(value) => {
                       setForm({ ...form, mobileNo: value });
@@ -136,4 +137,4 @@ const FormTask = () => {
   );
 };
 
-export default FormTask;
+export default Form1;

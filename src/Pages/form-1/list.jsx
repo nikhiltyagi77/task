@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiTrash } from "react-icons/fi";
 
-const ListTest = () => {
+const List1 = () => {
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -72,4 +72,4 @@ const ListTest = () => {
   );
 };
 
-export default ListTest;
+export default List1;
