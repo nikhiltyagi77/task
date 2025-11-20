@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-dropdown-select";
-import { FiPlus } from "react-icons/fi";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import ReactQuill from "react-quill";
+import ReactQuill from "react-quill-new";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
+import Layout from "../../Components/Layout";
 
 const Form1 = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState("");
+  const [error, setError] = useState({
+    fullName: "",
+    email: "",
+    mobileNo: "",
+    skills: [],
+    des: "",
+  });
   const [form, setForm] = useState({
     fullName: "",
     email: "",
     mobileNo: "",
-    skills: "",
+    skills: [],
     des: "",
     id: crypto.randomUUID(),
   });
@@ -28,19 +34,32 @@ const Form1 = () => {
       label: "NodeJS",
     },
   ];
-  const [editorContent, setEditorContent] = useState("");
   const handleEditor = (value) => {
     setEditorContent(value);
   };
+  const validate = (data) => {
+    let errors = {};
+    if (!data.fullName) errors.fullName = "enter Full name";
+    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";
+    if (!data.skills) errors.skills = "Select Skills";
+    return errors;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
+    let values = { ...form };
+    let valiateValue = validate(values);
+
+    if (Object.keys(valiateValue).length > 0) {
+      setError(valiateValue);
+      return;
+    }
     let existingValue = JSON.parse(sessionStorage.getItem("form"));
     if (!Array.isArray(existingValue)) {
       existingValue = existingValue ? [existingValue] : [];
     }
     const updateData = [...existingValue, form];
     sessionStorage.setItem("form", JSON.stringify(updateData));
-    navigate("/listtest");
+    navigate("/list-1");
     setForm({
       fullName: "",
       email: "",
@@ -56,83 +75,120 @@ const Form1 = () => {
       ...prev,
       [name]: value,
     }));
+    setError((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   };
+
+  const [QuillEditor, setQuillEditor] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    import("react-quill")
+      .then((mod) => {
+        if (mounted) setQuillEditor(() => mod.default);
+      })
+      .catch(console.error);
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Prevent rendering until loaded
+  if (!QuillEditor) {
+    return <div>Loading editor...</div>;
+  }
+
   return (
     <>
-      <div className="min-h-screen bg-[#fff] flex justify-center items-center p-4 ">
-        <div className="container mx-auto px-5 ">
-          <div className=" max-w-[700px] m-auto bg-[#f2f2f2] border-gray-400 border p-4 rounded-md ">
-            <div className="flex justify-end ">
+      <Layout>
+        <div className="min-h-screen bg-[#fff] flex justify-center items-center p-4 ">
+          <div className="container mx-auto px-5 ">
+            <div className=" max-w-[700px] m-auto bg-[#f2f2f2] border-gray-400 border p-4 rounded-md ">
+              {/* <div className="flex justify-end ">
               <button className="p-3 rounded bg-[#0c9aff] mb-3 cursor-pointer hover:opacity-80 text-[#fff] ">
                 <FiPlus />
               </button>
+            </div> */}
+              <form onSubmit={handleSubmit}>
+                <div className="grid grid-cols-12 gap-4 ">
+                  <div className="md:col-span-6 col-span-12 ">
+                    <label>Full Name</label>
+                    <input
+                      type="text"
+                      value={form.fullName}
+                      onChange={handleChange}
+                      className="px-3 py-2 w-full !outline-none border border-[#c0c0c0] rounded "
+                      name="fullName"
+                    />
+                    <p className="text-red-600 ">{error && error.fullName}</p>
+                  </div>
+                  <div className="md:col-span-6 col-span-12 ">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={handleChange}
+                      className="px-3 py-2 w-full !outline-none border border-[#c0c0c0] rounded "
+                      name="email"
+                    />
+                  </div>
+                  <div className="md:col-span-6 col-span-12 ">
+                    <label>Mobile No.</label>
+                    <PhoneInput
+                      country="in"
+                      value={form.mobileNo}
+                      onChange={(value) => {
+                        setForm({ ...form, mobileNo: value });
+                        setError({ ...form, mobileNo: "" });
+                      }}
+                      className="px-3 py-2 w-full !outline-none border border-[#c0c0c0] rounded "
+                      name="mobileno"
+                    />
+                    <p className="text-red-600 ">{error && error.mobileNo}</p>
+                  </div>
+                  <div className="md:col-span-6 col-span-12 ">
+                    <label>Skills</label>
+                    <Select
+                      isMulti
+                      options={options}
+                      onChange={(e) =>
+                        setForm((prev) => ({ ...prev, skills: e }))
+                      }
+                      value={form.skills}
+                    />
+                    <p className="text-red-600 ">{error && error.skills}</p>
+                  </div>
+                  <div className="col-span-12 ">
+                    <label>Description</label>
+                    <ReactQuill
+                      theme="snow"
+                      value={form.des}
+                      onChange={(e) => {
+                        setForm((prev) => ({
+                          ...prev,
+                          des: e,
+                        }));
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="flex mt-4 justify-center items-center  ">
+                  <button
+                    type="submit"
+                    className="bg-[#0c8e0a] px-4 py-1.5 rounded cursor-pointer hover:opacity-80 text-[#fff] font-medium text-[14px] "
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
             </div>
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-12 gap-4 ">
-                <div className="md:col-span-6 col-span-12 ">
-                  <label>Full Name</label>
-                  <input
-                    type="text"
-                    value={form.fullName}
-                    onChange={handleChange}
-                    className="px-3 py-2 w-full !outline-none border border-[#c0c0c0] rounded "
-                    name="fullName"
-                  />
-                </div>
-                <div className="md:col-span-6 col-span-12 ">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="px-3 py-2 w-full !outline-none border border-[#c0c0c0] rounded "
-                    name="email"
-                  />
-                </div>
-                <div className="md:col-span-6 col-span-12 ">
-                  <label>Mobile No.</label>
-                  <PhoneInput
-                    country="in"
-                    value={form.mobileNo}
-                    onChange={(value) => {
-                      setForm({ ...form, mobileNo: value });
-                    }}
-                    className="px-3 py-2 w-full !outline-none border border-[#c0c0c0] rounded "
-                    name="mobileno"
-                  />
-                </div>
-                <div className="md:col-span-6 col-span-12 ">
-                  <label>Skills</label>
-                  <Select
-                    options={options}
-                    name="skills"
-                    onChange={(name) => {
-                      setForm({ ...form, name });
-                    }}
-                    value={form.skills}
-                  />
-                </div>
-                {/* <div className="col-span-12 ">
-                  <label>Description</label>
-                  <ReactQuill
-                    theme="snow"
-                    value={editorContent}
-                    onChange={handleEditor}
-                  />
-                </div> */}
-              </div>
-              <div className="flex mt-4 justify-center items-center  ">
-                <button
-                  type="submit"
-                  className="bg-[#0c8e0a] px-4 py-1.5 rounded cursor-pointer hover:opacity-80 text-[#fff] font-medium text-[14px] "
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
           </div>
         </div>
-      </div>
+      </Layout>
     </>
   );
 };

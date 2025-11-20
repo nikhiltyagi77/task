@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import Form1 from "./Pages/form-1/form";
 import List1 from "./Pages/form-1/list";
+import FormStep from "./Pages/step-form/form";
+import ListStep from "./Pages/step-form/list";
+import "./App.css"
 
 const App = () => {
   return (
@@ -12,6 +15,8 @@ const App = () => {
           <Route path="/" element={<Home />}></Route>
           <Route path="/list-1" element={<List1 />}></Route>
           <Route path="/form-1" element={<Form1 />}></Route>
+          <Route path="/step-form" element={<FormStep />}></Route>
+          <Route path="/step-list" element={<ListStep />}></Route>
         </Routes>
       </Router>
     </div>

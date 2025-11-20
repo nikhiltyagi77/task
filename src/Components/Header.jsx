@@ -15,7 +15,7 @@ export default function Header() {
                 <Link to="/form-1">Form-1</Link>
               </li>
               <li className="hover:opacity-80 hover:underline ">
-                <Link to="/list-1">List-1</Link>
+                <Link to="/step-form">Form Step</Link>
               </li>
             </ul>
           </div>
