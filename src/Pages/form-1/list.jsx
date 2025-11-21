@@ -14,7 +14,6 @@ const List1 = () => {
     id: crypto.randomUUID(),
   });
   const [data, setData] = useState([]);
-  console.log(data);
   useEffect(() => {
     const getData = JSON.parse(sessionStorage.getItem("form"));
     if (getData) {
