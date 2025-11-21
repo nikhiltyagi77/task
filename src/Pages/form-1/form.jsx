@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Select from "react-dropdown-select";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import ReactQuill from "react-quill-new";
-import "react-quill/dist/quill.snow.css";
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
 import Layout from "../../Components/Layout";
 
@@ -34,9 +34,6 @@ const Form1 = () => {
       label: "NodeJS",
     },
   ];
-  const handleEditor = (value) => {
-    setEditorContent(value);
-  };
   const validate = (data) => {
     let errors = {};
     if (!data.fullName) errors.fullName = "enter Full name";
@@ -81,25 +78,6 @@ const Form1 = () => {
     }));
   };
 
-  const [QuillEditor, setQuillEditor] = useState(null);
-
-  useEffect(() => {
-    let mounted = true;
-    import("react-quill")
-      .then((mod) => {
-        if (mounted) setQuillEditor(() => mod.default);
-      })
-      .catch(console.error);
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  // Prevent rendering until loaded
-  if (!QuillEditor) {
-    return <div>Loading editor...</div>;
-  }
 
   return (
     <>
@@ -107,11 +85,6 @@ const Form1 = () => {
         <div className="min-h-screen bg-[#fff] flex justify-center items-center p-4 ">
           <div className="container mx-auto px-5 ">
             <div className=" max-w-[700px] m-auto bg-[#f2f2f2] border-gray-400 border p-4 rounded-md ">
-              {/* <div className="flex justify-end ">
-              <button className="p-3 rounded bg-[#0c9aff] mb-3 cursor-pointer hover:opacity-80 text-[#fff] ">
-                <FiPlus />
-              </button>
-            </div> */}
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-12 gap-4 ">
                   <div className="md:col-span-6 col-span-12 ">
