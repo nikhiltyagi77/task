@@ -40,31 +40,36 @@ const FormStep = () => {
       label: "NodeJS",
     },
   ];
-  const validate = (data) => {
+  const step1Validate = (data) => {
     let errors = {};
     if (!data.name) errors.name = "enter Full name";
-    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";  
+    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";
+    return errors;
+  };
+  const step2Validate = (data) => {
+    let errors = {};
     if (!data.city) errors.city = "Enter your City";
     if (!data.state) errors.state = "Enter state";
     if (!data.pinCode) errors.pinCode = "Pin Code Required";
+    return errors;
+  };
+  const step3Validate = (data) => {
+    let errors = {};
     if (!data.hobbies) errors.hobbies = "Write your hobbies";
     return errors;
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    sessionStorage.setItem("formstep", JSON.stringify(form));
     let values = { ...form };
-    let valiateValue = validate(values);
+    let valiateValue = step3Validate(values);
+    console.log(valiateValue, "value");
 
     if (Object.keys(valiateValue).length > 0) {
       setError(valiateValue);
       return;
     }
-    let existingValue = JSON.parse(sessionStorage.getItem("formstep"));
-    if (!Array.isArray(existingValue)) {
-      existingValue = existingValue ? [existingValue] : [];
-    }
-    const updateData = [...existingValue, form];
+    let existingValue = JSON.parse(sessionStorage.getItem("formstep")) || [];
+    const updateData = [...existingValue, values];
     sessionStorage.setItem("formstep", JSON.stringify(updateData));
     setForm({
       name: "",
@@ -89,29 +94,28 @@ const FormStep = () => {
       [name]: "",
     }));
   };
-  const step1Validate = () =>{
-    let errors = {};
-    if (!data.name) errors.name = "enter Full name";
-    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";    
-  }
-   const step2Validate = () =>{
-    let errors = {};
-    if (!data.name) errors.name = "enter Full name";
-    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";    
-  }
-   const step3Validate = () =>{
-    let errors = {};
-    if (!data.name) errors.name = "enter Full name";
-    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";    
-  }
+
   const handleNext = () => {
     let values = { ...form };
-    let valiateValue = validate(values);
-    if (Object.keys(valiateValue).length > 0) {
-      setError(valiateValue);
-      return;
+    if (step === 1) {
+      let valiateValue = step1Validate(values);
+
+      if (Object.keys(valiateValue).length > 0) {
+        setError(valiateValue);
+        return;
+      } else {
+        setStep(2);
+      }
+    } else if (step === 2) {
+      let valiateValue = step2Validate(values);
+
+      if (Object.keys(valiateValue).length > 0) {
+        setError(valiateValue);
+        return;
+      } else {
+        setStep(3);
+      }
     }
-    setStep(step + 1);
   };
   const handlePrev = () => {
     setStep(step - 1);
@@ -269,6 +273,10 @@ const FormStep = () => {
                           className="w-full rounded !outline-none "
                           name="state"
                           value={form.hobbies}
+                          onChange={(e) => {
+                            setForm((prev) => ({ ...prev, hobbies: e }));
+                            setError((prev) => ({ ...prev, hobbies: "" }));
+                          }}
                         />
                         <p className="text-red-600  ">
                           {error && error.hobbies}
