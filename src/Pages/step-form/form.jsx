@@ -1,8 +1,8 @@
 import PhoneInput from "react-phone-input-2";
 import Layout from "../../Components/Layout";
 import Select from "react-dropdown-select";
-import ReactQuill from 'react-quill-new';
-import 'react-quill-new/dist/quill.snow.css';
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { BiLeftArrow } from "react-icons/bi";
@@ -18,7 +18,6 @@ const FormStep = () => {
     pinCode: "",
     skills: [],
     hobbies: "",
-
   });
   const [form, setForm] = useState({
     name: "",
@@ -43,18 +42,17 @@ const FormStep = () => {
   ];
   const validate = (data) => {
     let errors = {};
-    if (!data.name) errors.fullName = "enter Full name";
-    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";
+    if (!data.name) errors.name = "enter Full name";
+    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";  
     if (!data.city) errors.city = "Enter your City";
     if (!data.state) errors.state = "Enter state";
     if (!data.pinCode) errors.pinCode = "Pin Code Required";
     if (!data.hobbies) errors.hobbies = "Write your hobbies";
-    if (!data.skills) errors.skills = "Select Skills";
     return errors;
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-        sessionStorage.setItem("form", JSON.stringify(form));
+    sessionStorage.setItem("formstep", JSON.stringify(form));
     let values = { ...form };
     let valiateValue = validate(values);
 
@@ -62,12 +60,12 @@ const FormStep = () => {
       setError(valiateValue);
       return;
     }
-    let existingValue = JSON.parse(sessionStorage.getItem("form"));
+    let existingValue = JSON.parse(sessionStorage.getItem("formstep"));
     if (!Array.isArray(existingValue)) {
       existingValue = existingValue ? [existingValue] : [];
     }
     const updateData = [...existingValue, form];
-    sessionStorage.setItem("form", JSON.stringify(updateData));
+    sessionStorage.setItem("formstep", JSON.stringify(updateData));
     setForm({
       name: "",
       email: "",
@@ -80,7 +78,6 @@ const FormStep = () => {
       id: crypto.randomUUID(),
     });
   };
-  console.log(form);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -92,7 +89,28 @@ const FormStep = () => {
       [name]: "",
     }));
   };
+  const step1Validate = () =>{
+    let errors = {};
+    if (!data.name) errors.name = "enter Full name";
+    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";    
+  }
+   const step2Validate = () =>{
+    let errors = {};
+    if (!data.name) errors.name = "enter Full name";
+    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";    
+  }
+   const step3Validate = () =>{
+    let errors = {};
+    if (!data.name) errors.name = "enter Full name";
+    if (!data.mobileNo) errors.mobileNo = "Mobile No. Required";    
+  }
   const handleNext = () => {
+    let values = { ...form };
+    let valiateValue = validate(values);
+    if (Object.keys(valiateValue).length > 0) {
+      setError(valiateValue);
+      return;
+    }
     setStep(step + 1);
   };
   const handlePrev = () => {
@@ -107,12 +125,16 @@ const FormStep = () => {
             <div className="max-w-[900px] mt-[5rem] w-full m-auto bg-[#969696] rounded-[20px] p-5 ">
               <button
                 onClick={handlePrev}
-                className={step === 1 ? "hidden" : "rounded-full bg-[#000] text-[#fff] font-medium text-[12px] p-2 disabled:cursor-not-allowed cursor-pointer"}
+                className={
+                  step === 1
+                    ? "hidden"
+                    : "rounded-full bg-[#000] text-[#fff] font-medium text-[12px] p-2 disabled:cursor-not-allowed cursor-pointer"
+                }
               >
                 <BiLeftArrow />
               </button>
               <form onSubmit={handleSubmit}>
-                {step == 1 &&
+                {step == 1 && (
                   <div className="mt-5 ">
                     <h2 className="xl:text-[28px] lg:text-[26px] md:text-[24px] sm:text-[22px] text-[20px] font-semibold text-[#fff] ">
                       Personal Information
@@ -129,6 +151,7 @@ const FormStep = () => {
                           onChange={handleChange}
                           value={form.name}
                         />
+                        <p className="text-red-600  ">{error && error.name}</p>
                       </div>
                       <div>
                         <label className="text-[14px] text-[#fff] mb-1 ">
@@ -136,6 +159,7 @@ const FormStep = () => {
                         </label>
                         <input
                           type="email"
+                          required
                           className="w-full border border-[#efefef] rounded px-3 py-1.5 !outline-none "
                           name="email"
                           onChange={handleChange}
@@ -151,15 +175,19 @@ const FormStep = () => {
                           className="w-full border border-[#efefef] rounded px-3 py-1.5 !outline-none "
                           name="mobileNo"
                           value={form.mobileNo}
-                          onChange={(e) =>
-                            setForm((prev) => ({ ...prev, mobileNo: e }))
-                          }
+                          onChange={(e) => {
+                            setForm((prev) => ({ ...prev, mobileNo: e }));
+                            setError((prev) => ({ ...prev, mobileNo: "" }));
+                          }}
                         />
+                        <p className="text-red-600  ">
+                          {error && error.mobileNo}
+                        </p>
                       </div>
                     </div>
                   </div>
-                }
-                {step == 2 &&
+                )}
+                {step == 2 && (
                   <div className="mt-5 ">
                     <h2 className="xl:text-[28px] lg:text-[26px] md:text-[24px] sm:text-[22px] text-[20px] font-semibold text-[#fff] ">
                       Address
@@ -176,6 +204,7 @@ const FormStep = () => {
                           onChange={handleChange}
                           value={form.city}
                         />
+                        <p className="text-red-600  ">{error && error.city}</p>
                       </div>
                       <div>
                         <label className="text-[14px] text-[#fff] mb-1 ">
@@ -188,6 +217,7 @@ const FormStep = () => {
                           onChange={handleChange}
                           value={form.state}
                         />
+                        <p className="text-red-600  ">{error && error.state}</p>
                       </div>
                       <div>
                         <label className="text-[14px] text-[#fff] mb-1 ">
@@ -200,11 +230,14 @@ const FormStep = () => {
                           onChange={handleChange}
                           value={form.pinCode}
                         />
+                        <p className="text-red-600  ">
+                          {error && error.pinCode}
+                        </p>
                       </div>
                     </div>
                   </div>
-                }
-                {step == 3 &&
+                )}
+                {step == 3 && (
                   <div className="mt-5 ">
                     <h2 className="xl:text-[28px] lg:text-[26px] md:text-[24px] sm:text-[22px] text-[20px] font-semibold text-[#fff] ">
                       Technical Information
@@ -218,11 +251,15 @@ const FormStep = () => {
                           className="w-full border border-[#efefef] rounded px-3 py-1.5 !outline-none "
                           name="skills"
                           options={options}
+                          required
                           value={form.skills}
-                          onChange={(e) =>
-                            setForm((prev) => ({ ...prev, skills: e }))
-                          }
+                          onChange={(e) => {
+                            setForm((prev) => ({ ...prev, skills: e }));
+                          }}
                         />
+                        <p className="text-red-600  ">
+                          {error && error.skills}
+                        </p>
                       </div>
                       <div className="col-span-12 ">
                         <label className="text-[14px] text-[#fff] mb-1 ">
@@ -233,15 +270,23 @@ const FormStep = () => {
                           name="state"
                           value={form.hobbies}
                         />
+                        <p className="text-red-600  ">
+                          {error && error.hobbies}
+                        </p>
                       </div>
                     </div>
                   </div>
-                }
+                )}
                 <div className="flex justify-center items-center gap-3 pt-5 ">
                   <button
                     onClick={handleNext}
+                    type="button"
                     disabled={step === 3}
-                    className={step === 3 ? "hidden" : "rounded bg-[#000] text-[#fff] font-medium text-[12px] px-4 py-2 disabled:cursor-not-allowed cursor-pointer"}
+                    className={
+                      step === 3
+                        ? "hidden"
+                        : "rounded bg-[#000] text-[#fff] font-medium text-[12px] px-4 py-2 disabled:cursor-not-allowed cursor-pointer"
+                    }
                   >
                     Next
                   </button>

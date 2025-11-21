@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Select from "react-dropdown-select";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import ReactQuill from 'react-quill-new';
-import 'react-quill-new/dist/quill.snow.css';
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../Components/Layout";
 
@@ -78,7 +78,6 @@ const Form1 = () => {
     }));
   };
 
-
   return (
     <>
       <Layout>
@@ -114,9 +113,15 @@ const Form1 = () => {
                     <PhoneInput
                       country="in"
                       value={form.mobileNo}
-                      onChange={(value) => {
-                        setForm({ ...form, mobileNo: value });
-                        setError({ ...form, mobileNo: "" });
+                      onChange={(e) => {
+                        setForm((prev) => ({
+                          ...prev,
+                          mobileNo: e,
+                        }));
+                        setError((prev) => ({
+                          ...prev,
+                          mobileNo: "",
+                        }));
                       }}
                       className="px-3 py-2 w-full !outline-none border border-[#c0c0c0] rounded "
                       name="mobileno"
@@ -144,6 +149,10 @@ const Form1 = () => {
                         setForm((prev) => ({
                           ...prev,
                           des: e,
+                        }));
+                        setError((prev) => ({
+                          ...prev,
+                          des: "",
                         }));
                       }}
                     />
