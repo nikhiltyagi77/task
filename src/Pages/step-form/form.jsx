@@ -71,7 +71,7 @@ const FormStep = () => {
     let existingValue = JSON.parse(sessionStorage.getItem("formstep")) || [];
     const updateData = [...existingValue, values];
     sessionStorage.setItem("formstep", JSON.stringify(updateData));
-    navigate("/step-list")
+    navigate("/step-list");
     setForm({
       name: "",
       email: "",
